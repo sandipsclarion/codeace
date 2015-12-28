@@ -1,1 +1,1 @@
-<h1>This is index page from Dev Branch</h1>
+<h1>This is index page from Stage Branch</h1>
