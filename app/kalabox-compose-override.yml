@@ -1,0 +1,38 @@
+##
+# This file contains some overrides that are useful for local development
+# and Kalabox
+#
+
+app:
+  build: ./dockerfiles/app
+  volumes:
+    - $KALABOX_APP_ROOT_BIND:/src
+  entrypoint: /src/local/scripts/php-fpm.sh
+  command: -d xdebug.remote_host=$KALABOX_ENGINE_REMOTE_IP -d xdebug.max_nesting_level=256 -d xdebug.show_exception_trace=0 -d xdebug.collect_params=0 -d xdebug.remote_enable=1
+  environment:
+    KALABOX_GID: $KALABOX_ENGINE_GID
+    KALABOX_UID: $KALABOX_ENGINE_ID
+    TERM: xterm
+web:
+  build: ./dockerfiles/web
+  volumes:
+    - $KALABOX_APP_ROOT_BIND:/src
+  entrypoint: /src/local/scripts/nginx.sh
+  command: -g "daemon off;"
+  environment:
+    KALABOX_GID: $KALABOX_ENGINE_GID
+    KALABOX_UID: $KALABOX_ENGINE_ID
+    TERM: xterm
+db:
+  build: ./dockerfiles/db
+  environment:
+    MYSQL_USER: drupal
+    MYSQL_PASSWORD: drupal
+    MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    MYSQL_DATABASE: drupal
+  ports:
+    - "3306"
+redis:
+  build: ./dockerfiles/redis
+  ports:
+    - "6379"

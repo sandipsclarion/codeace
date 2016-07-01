@@ -1,0 +1,69 @@
+#
+# This defines a basic webserver appserver.
+#
+web:
+
+  # Comment this and uncomment 'build' below if you want to edit your
+  # local dockerfile and build from there. This is useful for development
+  image: viperks/web:app-stable
+
+  # Uncomment this and comment 'image' above if you want to edit your
+  # local dockerfile and build from there. This is useful for development
+  #
+  # build: ./dockerfiles/web
+  links:
+    - app:app
+  ports:
+    - "80"
+  volumes_from:
+    - app
+
+#
+# This defines a basic Drupal appserver.
+#
+app:
+
+  # Comment this and uncomment 'build' below if you want to edit your
+  # local dockerfile and build from there. This is useful for development
+  image: viperks/app:stable
+
+  # Uncomment this and comment 'image' above if you want to edit your
+  # local dockerfile and build from there. This is useful for development
+  #
+  # build: ./dockerfiles/app
+  links:
+    - db:database
+    - redis:redis
+
+#
+# This defines a basic database server.
+#
+db:
+
+  # Comment this and uncomment 'build' below if you want to edit your
+  # local dockerfile and build from there. This is useful for development
+  image: mysql
+
+  # Uncomment this and comment 'image' above if you want to edit your
+  # local dockerfile and build from there. This is useful for development
+  #
+  # build: ./dockerfiles/db
+
+  environment:
+    MYSQL_ROOT_PASSWORD: $VIPERKS_SUPER_SECRET_PASSWORD
+    MYSQL_USER: drupal
+    MYSQL_PASSWORD: $VIPERKS_SUPER_SECRET_PASSWORD
+    MYSQL_DATABASE: drupal
+
+#
+# This defines a basic redis server.
+#
+redis:
+  # Comment this and uncomment 'build' below if you want to edit your
+  # local dockerfile and build from there. This is useful for development
+  image: redis:2.8
+
+  # Uncomment this and comment 'image' above if you want to edit your
+  # local dockerfile and build from there. This is useful for development
+  #
+  # build: ./dockerfiles/redis

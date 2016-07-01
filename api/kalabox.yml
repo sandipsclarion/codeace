@@ -1,0 +1,11 @@
+name: api.viperks
+type: custom
+version: 0.0.1
+pluginconfig:
+  cli: 'off'
+  sharing:
+    share: 'data:/code'
+  services:
+    web:
+      - port: 80/tcp
+        default: true
